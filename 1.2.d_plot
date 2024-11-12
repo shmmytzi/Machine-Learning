@@ -1,0 +1,38 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import multivariate_normal
+
+mu_x = 5          # Μέση τιμή για X
+mu_y = 10         # Μέση τιμή για Y
+sigma_x = 3       # Τυπική απόκλιση για X
+sigma_y = 4       # Τυπική απόκλιση για Y
+rho = 0.6         # Συντελεστής συσχέτισης
+
+# Σ
+cov_matrix = np.array([[sigma_x**2, rho*sigma_x*sigma_y],
+                       [rho*sigma_x*sigma_y, sigma_y**2]])
+
+#p(x,y)
+p = multivariate_normal([mu_x, mu_y], cov_matrix)
+
+# p(6, 12)
+point = np.array([6, 12])
+f_value = p.pdf(point)
+
+x = np.linspace(0, 10, 100) 
+y = np.linspace(5, 15, 100) 
+X, Y = np.meshgrid(x, y)
+
+pos = np.dstack((X, Y))
+Z = p.pdf(pos)
+
+plt.contour(X, Y, Z, levels=[f_value], colors='pink', linewidths=2)
+
+plt.title('Isocontour of bivariate Gaussian distribution')
+plt.xlabel('X')
+plt.ylabel('Y')
+plt.grid(True)
+plt.axis('equal')
+#plt.xlim(0, 10)
+#plt.ylim(5, 15)
+plt.show()

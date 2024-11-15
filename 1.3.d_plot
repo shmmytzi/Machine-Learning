@@ -1,0 +1,62 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import multivariate_normal
+
+# Means for each class
+mu1 = np.array([3, -2])
+mu2 = np.array([4, 3])
+mu3 = np.array([6, 7])
+
+# Common covariance matrix
+Sigma = np.array([[1, 0.5], [0.5, 1]])
+
+# Number of points to generate per class
+n_points = 500
+
+# Generate random points for each class
+points_class1 = np.random.multivariate_normal(mu1, Sigma, n_points)
+points_class2 = np.random.multivariate_normal(mu2, Sigma, n_points)
+points_class3 = np.random.multivariate_normal(mu3, Sigma, n_points)
+
+# Plotting
+plt.figure(figsize=(10, 8))
+
+# Scatter plot of points for each class
+plt.scatter(points_class1[:, 0], points_class1[:, 1], color='red', label='Class ω1', alpha=0.5)
+plt.scatter(points_class2[:, 0], points_class2[:, 1], color='green', label='Class ω2', alpha=0.5)
+plt.scatter(points_class3[:, 0], points_class3[:, 1], color='blue', label='Class ω3', alpha=0.5)
+
+# Plot class centers
+plt.plot(mu1[0], mu1[1], 'ro', markersize=10, label='Center μ1')
+plt.plot(mu2[0], mu2[1], 'go', markersize=10, label='Center μ2')
+plt.plot(mu3[0], mu3[1], 'bo', markersize=10, label='Center μ3')
+
+
+# Define the range for plotting the decision boundaries
+x_vals = np.linspace(-5, 12, 300)
+
+# Calculate y-values for each decision boundary
+# 1. Boundary between ω1 and ω2: 2x1 - 6x2 = -2.718
+y_vals_12 = (2 * x_vals + 2.718) / 6
+
+# 2. Boundary between ω1 and ω3: 2x1 - 10x2 = -19.55
+y_vals_13 = (2 * x_vals + 19.55) / 10
+
+# 3. Boundary between ω2 and ω3: x2 = 5.128 (horizontal line)
+y_vals_23 = np.full_like(x_vals, 5.128)
+
+# Plot decision boundaries
+plt.plot(x_vals, y_vals_12, 'k--', label='Boundary ω1-ω2')
+plt.plot(x_vals, y_vals_13, 'm--', label='Boundary ω1-ω3')
+plt.plot(x_vals, y_vals_23, 'c--', label='Boundary ω2-ω3')
+
+# Labeling and legend
+plt.xlabel('x1')
+plt.ylabel('x2')
+plt.title('Generated Points from Gaussian Distributions and Class Centers')
+plt.legend()
+plt.grid(True)
+plt.axis('equal')
+
+# Show plot
+plt.show()
